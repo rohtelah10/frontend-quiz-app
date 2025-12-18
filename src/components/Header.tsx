@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { type DefaultTheme } from "styled-components";
 import ThemeButton from "./ThemeButton";
 import SunImgLight from "../assets/images/icon-sun-dark.svg";
 import SunImgDark from "../assets/images/icon-sun-light.svg";
@@ -13,36 +13,52 @@ import JsImage from "../assets/images/icon-js.svg";
 import { useTheme } from "../context/ThemeContext";
 
 export default function ({
-  subject
+  subject,
 }: {
   subject: SubjectType | "Answer" | null;
 }) {
-
   const { mode, toggleTheme } = useTheme();
 
   const SubjectImage = {
-    "HTML" : HtmlImage,
-    "CSS" : CssImage,
-    "JavaScript": JsImage,
-    "Accessibility": AccessImage
-  }
+    HTML: HtmlImage,
+    CSS: CssImage,
+    JavaScript: JsImage,
+    Accessibility: AccessImage,
+  };
 
-  const isValidSubject = subject && subject as keyof typeof SubjectImage;
+  const ImgBack: Record<string, keyof DefaultTheme["colors"]> = {
+    HTML: "html-icon",
+    CSS: "css-icon",
+    JavaScript: "js-icon",
+    Accessibility: "access-icon",
+  };
+
+  const isValidSubject = subject && (subject as keyof typeof SubjectImage);
   return (
     <Header>
       <Subject>
         {subject && isValidSubject && (
           <>
-            
-            <SubjectImg src={SubjectImage[isValidSubject]} alt=""></SubjectImg>
+            <SubjectDiv backCol={ImgBack[subject as keyof typeof ImgBack]}>
+              <SubjectImg
+                src={SubjectImage[isValidSubject]}
+                alt=""
+              ></SubjectImg>
+            </SubjectDiv>
             <TextPreset4>{subject}</TextPreset4>
           </>
         )}
       </Subject>
       <Theme>
-        <SunImg src={mode=="light" ?SunImgLight: SunImgDark} alt="Sun"></SunImg>
-        <ThemeButton active={mode === "dark"} onClick={toggleTheme}/>
-        <MoonImg src={mode=="light" ? MoonImgLight: MoonImgDark} alt="Moon"></MoonImg>
+        <SunImg
+          src={mode == "light" ? SunImgLight : SunImgDark}
+          alt="Sun"
+        ></SunImg>
+        <ThemeButton active={mode === "dark"} onClick={toggleTheme} />
+        <MoonImg
+          src={mode == "light" ? MoonImgLight : MoonImgDark}
+          alt="Moon"
+        ></MoonImg>
       </Theme>
     </Header>
   );
@@ -71,3 +87,13 @@ const SubjectImg = styled.img``;
 const SunImg = styled.img``;
 
 const MoonImg = styled.img``;
+
+const SubjectDiv = styled.div<{backCol: keyof DefaultTheme["colors"]}>`
+  background-color: ${({theme, backCol}) => theme.colors[backCol]};
+    border-radius: 8px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

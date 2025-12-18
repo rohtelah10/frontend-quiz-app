@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { type DefaultTheme } from "styled-components";
 import {
   TextPreset2Light,
   TextPreset2Medium,
@@ -16,14 +16,22 @@ export default function ({
     React.SetStateAction<SubjectType | "Answer" | null>
   >;
 }) {
+
+  const ImgBack: Record<string, keyof DefaultTheme["colors"]> = {
+    "HTML": "html-icon",
+    "CSS": "css-icon",
+    "JavaScript": "js-icon",
+    "Accessibility": "access-icon",
+  }
+
+
+
   return (
     <WelcomePage>
       <WelcomeBox>
         <div>
-          <TextPreset2Light >Welcome to the</TextPreset2Light>
-          <TextPreset2Medium >
-            Frontend Quiz!
-          </TextPreset2Medium>
+          <TextPreset2Light>Welcome to the</TextPreset2Light>
+          <TextPreset2Medium>Frontend Quiz!</TextPreset2Medium>
         </div>
         <TextPreset6>
           <p style={{ color: "#626c7f" }}>Pick a subject to get started.</p>
@@ -39,7 +47,9 @@ export default function ({
                 setSubject(elem.title);
               }}
             >
-              <SubjectImage src={elem.icon} alt=""></SubjectImage>
+              <SubjectDiv backCol={ImgBack[elem.title as keyof typeof ImgBack]}>
+                <SubjectImage src={elem.icon} alt=""></SubjectImage>
+              </SubjectDiv>
               <TextPreset4>{elem.title}</TextPreset4>
             </Subject>
           );
@@ -104,10 +114,20 @@ const Subject = styled.button`
   display: flex;
   align-items: center;
   gap: 32px;
-  box-shadow: ${({theme}) => theme.colors["drop-shadow"]};
+  box-shadow: ${({ theme }) => theme.colors["drop-shadow"]};
 `;
 
 const SubjectImage = styled.img`
   width: 40px;
   height: 40px;
+`;
+
+const SubjectDiv = styled.div<{backCol: keyof DefaultTheme["colors"]}>`
+  background-color: ${({ theme, backCol }) => theme.colors[backCol]};
+  border-radius: 8px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

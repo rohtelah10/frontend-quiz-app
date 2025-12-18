@@ -15,6 +15,10 @@ declare module "styled-components" {
       "ques-wrong": string;
       "ques-hover": string;
       "drop-shadow": string;
+      "html-icon": string;
+      "css-icon": string;
+      "js-icon": string;
+      "access-icon": string;
     };
   }
 }
