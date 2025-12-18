@@ -2,7 +2,7 @@ import "styled-components";
 
 declare module "styled-components" {
   export interface DefaultTheme {
-    palette: string,
+    // palette: string,
     colors: {
       background: string;
       option: string;
